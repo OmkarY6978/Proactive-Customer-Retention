@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Segment Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .card {
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <div class="container mx-auto p-4 sm:p-6 lg:p-8">
+        <header class="text-center mb-8">
+            <h1 class="text-3xl sm:text-4xl font-bold text-gray-900">Customer Action Plan</h1>
+            <p class="mt-2 text-lg text-gray-600">Interactive dashboard to view customer segments and recommended actions.</p>
+        </header>
+
+        <div id="filter-buttons" class="flex flex-wrap justify-center gap-2 mb-8">
+            </div>
+
+        <div id="customer-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            </div>
+
+        <div id="no-results" class="hidden text-center py-16">
+            <h3 class="text-2xl font-semibold text-gray-500">No Customers Found</h3>
+            <p class="text-gray-400 mt-2">Try selecting a different segment.</p>
+        </div>
+    </div>
+
+    <!-- 
+    =====================================================================
+    EMBEDDED CUSTOMER DATA
+    - The 'fetch' method was causing errors in this environment.
+    - To fix this, the data is now embedded directly into this file.
+    - You can replace the sample data below with the full content of your
+      own 'data.json' file. Just copy everything from your file and
+      paste it between the square brackets [ ... ].
+    =====================================================================
+    -->
+    <script id="customer-data">
+    const embeddedCustomerData = [
+        { "Customer ID": 17850, "Segment": "Champions", "Recommended_Action": "Reward with loyalty program & exclusive offers.", "Recency": 30, "Frequency": 34, "MonetaryValue": 5288.63, "Churn": 0 },
+        { "Customer ID": 13047, "Segment": "Champions", "Recommended_Action": "Reward with loyalty program & exclusive offers.", "Recency": 31, "Frequency": 17, "MonetaryValue": 3079.10, "Churn": 0 },
+        { "Customer ID": 12583, "Segment": "At-Risk", "Recommended_Action": "Launch personalized win-back campaigns with special discounts.", "Recency": 150, "Frequency": 15, "MonetaryValue": 7187.34, "Churn": 1 },
+        { "Customer ID": 14688, "Segment": "Potential Loyalists", "Recommended_Action": "Nurture with targeted promotions & cross-selling.", "Recency": 7, "Frequency": 7, "MonetaryValue": 1599.20, "Churn": 0 },
+        { "Customer ID": 15311, "Segment": "Champions", "Recommended_Action": "Reward with loyalty program & exclusive offers.", "Recency": 0, "Frequency": 91, "MonetaryValue": 60767.90, "Churn": 0 },
+        { "Customer ID": 17841, "Segment": "At-Risk", "Recommended_Action": "Launch personalized win-back campaigns with special discounts.", "Recency": 180, "Frequency": 25, "MonetaryValue": 40991.57, "Churn": 1 },
+        { "Customer ID": 14096, "Segment": "New Customers", "Recommended_Action": "Focus on onboarding & offer first-purchase discounts.", "Recency": 4, "Frequency": 1, "MonetaryValue": 500.00, "Churn": 0 },
+        { "Customer ID": 16029, "Segment": "Potential Loyalists", "Recommended_Action": "Nurture with targeted promotions & cross-selling.", "Recency": 38, "Frequency": 9, "MonetaryValue": 50992.61, "Churn": 0 },
+        { "Customer ID": 14606, "Segment": "Champions", "Recommended_Action": "Reward with loyalty program & exclusive offers.", "Recency": 1, "Frequency": 93, "MonetaryValue": 11713.89, "Churn": 0 },
+        { "Customer ID": 13798, "Segment": "At-Risk", "Recommended_Action": "Launch personalized win-back campaigns with special discounts.", "Recency": 95, "Frequency": 10, "MonetaryValue": 3716.71, "Churn": 1 },
+        { "Customer ID": 15100, "Segment": "New Customers", "Recommended_Action": "Focus on onboarding & offer first-purchase discounts.", "Recency": 33, "Frequency": 1, "MonetaryValue": 350.00, "Churn": 0 },
+        { "Customer ID": 18102, "Segment": "Champions", "Recommended_Action": "Reward with loyalty program & exclusive offers.", "Recency": 0, "Frequency": 60, "MonetaryValue": 259657.30, "Churn": 0 }
+    ];
+    </script>
+
+
+    <script>
+        // --- UI Elements ---
+        const grid = document.getElementById('customer-grid');
+        const filterButtonsContainer = document.getElementById('filter-buttons');
+        const noResultsDiv = document.getElementById('no-results');
+
+        // --- State ---
+        let activeFilter = 'All';
+        // The customerData variable is now populated directly from the script tag above.
+        const customerData = embeddedCustomerData; 
+
+        // --- Functions ---
+        const segmentColors = {
+            'Champions': { bg: 'bg-green-100', text: 'text-green-800', border: 'border-green-400' },
+            'Potential Loyalists': { bg: 'bg-blue-100', text: 'text-blue-800', border: 'border-blue-400' },
+            'New Customers': { bg: 'bg-indigo-100', text: 'text-indigo-800', border: 'border-indigo-400' },
+            'At-Risk': { bg: 'bg-red-100', text: 'text-red-800', border: 'border-red-400' }
+        };
+
+        function createCustomerCard(customer) {
+            const colors = segmentColors[customer.Segment] || { bg: 'bg-gray-100', text: 'text-gray-800', border: 'border-gray-400' };
+            return `
+                <div class="card bg-white rounded-lg shadow-md p-5 border-l-4 ${colors.border}">
+                    <div class="flex justify-between items-start">
+                        <h3 class="text-lg font-bold text-gray-900">Customer #${customer['Customer ID']}</h3>
+                        <span class="px-3 py-1 text-xs font-semibold rounded-full ${colors.bg} ${colors.text}">${customer.Segment}</span>
+                    </div>
+                    <div class="mt-4">
+                        <p class="text-sm font-medium text-gray-600">Recommended Action:</p>
+                        <p class="text-sm text-gray-800 font-semibold">${customer.Recommended_Action}</p>
+                    </div>
+                    <div class="mt-4 border-t pt-4 flex justify-between text-center text-sm">
+                        <div>
+                            <p class="font-bold text-gray-800">${customer.Recency}</p>
+                            <p class="text-gray-500">Recency</p>
+                        </div>
+                        <div>
+                            <p class="font-bold text-gray-800">${customer.Frequency}</p>
+                            <p class="text-gray-500">Frequency</p>
+                        </div>
+                        <div>
+                            <p class="font-bold text-gray-800">$${customer.MonetaryValue.toFixed(2)}</p>
+                            <p class="text-gray-500">Monetary</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderGrid() {
+            grid.innerHTML = '';
+            const filteredData = activeFilter === 'All' 
+                ? customerData 
+                : customerData.filter(c => c.Segment === activeFilter);
+            
+            if (filteredData.length === 0) {
+                noResultsDiv.classList.remove('hidden');
+            } else {
+                noResultsDiv.classList.add('hidden');
+            }
+
+            filteredData.forEach(customer => {
+                grid.innerHTML += createCustomerCard(customer);
+            });
+        }
+
+        function createFilterButtons() {
+            const segments = ['All', ...Object.keys(segmentColors)];
+            segments.forEach(segment => {
+                const button = document.createElement('button');
+                button.innerText = segment;
+                button.dataset.filter = segment;
+                button.className = `px-4 py-2 text-sm font-medium rounded-full transition-colors duration-200 ${
+                    activeFilter === segment 
+                    ? 'bg-blue-600 text-white shadow-lg' 
+                    : 'bg-white text-gray-700 hover:bg-gray-200'
+                }`;
+                button.onclick = handleFilterClick;
+                filterButtonsContainer.appendChild(button);
+            });
+        }
+        
+        function handleFilterClick(event) {
+            activeFilter = event.target.dataset.filter;
+            filterButtonsContainer.innerHTML = '';
+            createFilterButtons();
+            renderGrid();
+        }
+
+        // --- Initial Load ---
+        function initializeApp() {
+            if (!customerData || customerData.length === 0) {
+                grid.innerHTML = `<p class="text-center text-red-500">No customer data found. Please make sure the data is embedded correctly in the HTML file.</p>`;
+                return;
+            }
+            // Now build the UI
+            createFilterButtons();
+            renderGrid();
+        }
+
+        document.addEventListener('DOMContentLoaded', initializeApp);
+
+    </script>
+</body>
+</html>

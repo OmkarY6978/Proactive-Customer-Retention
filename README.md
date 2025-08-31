@@ -14,14 +14,14 @@
 
 ---
 
-### 🤔 Problem Statement
+### Problem Statement
 
 In the competitive world of e-commerce, acquiring new customers is far more expensive than retaining existing ones. Many online retailers struggle with a common challenge: **they don't know which of their customers are about to leave.** This leads to:
 - **Wasted Marketing Spend:** Generic marketing campaigns are sent to everyone, failing to target the customers who actually need a nudge.
 - **Lost Revenue:** Valuable customers silently churn without any intervention.
 - **Lack of Insight:** The business has no clear understanding of its different customer types or their specific needs.
 
-### ✨ Our Solution: How This Project Helps Retailers
+### Our Solution: How This Project Helps Retailers
 
 This project provides a direct solution by turning raw sales data into an actionable business strategy. Instead of guessing, a retailer can use this analysis to:
 
@@ -32,7 +32,7 @@ This project provides a direct solution by turning raw sales data into an action
 
 ---
 
-### 🗺️ Our Process: From Raw Data to Actionable Insights
+### Our Process: From Raw Data to Actionable Insights
 
 Our workflow was structured to ensure a robust and meaningful outcome.
 
@@ -50,16 +50,16 @@ Our workflow was structured to ensure a robust and meaningful outcome.
 
 ---
 
-### 👥 Customer Personas Uncovered
+### Customer Personas Uncovered
 
 Our analysis identified four key customer segments, each with its own unique characteristics and required strategy.
 
 | Persona                 | Key Characteristics                                    | Recommended Action                                                              |
 | :---------------------- | :----------------------------------------------------- | :-------------------------------------------------------------------------------- |
-| 🏆 **Champions** | Your most valuable and loyal customers. They buy often and spend the most. | **Reward them.** Offer exclusive access, loyalty points, and personalized engagement. |
-| ⭐ **Potential Loyalists**| Consistent customers who show potential to become Champions. | **Nurture them.** Use targeted marketing and cross-selling to increase their frequency and spend. |
-| 🌱 **Newcomers** | First-time or very recent buyers. The crucial first impression phase. | **Onboard them.** Provide a great initial experience and incentives for a second purchase. |
-| ⚠️ **At-Risk** | Customers who haven't purchased in a long time. High risk of leaving. | **Re-engage them.** Launch targeted "we miss you" campaigns with compelling offers to win them back. |
+|  **Champions** | Your most valuable and loyal customers. They buy often and spend the most. | **Reward them.** Offer exclusive access, loyalty points, and personalized engagement. |
+|  **Potential Loyalists**| Consistent customers who show potential to become Champions. | **Nurture them.** Use targeted marketing and cross-selling to increase their frequency and spend. |
+|  **Newcomers** | First-time or very recent buyers. The crucial first impression phase. | **Onboard them.** Provide a great initial experience and incentives for a second purchase. |
+|  **At-Risk** | Customers who haven't purchased in a long time. High risk of leaving. | **Re-engage them.** Launch targeted "we miss you" campaigns with compelling offers to win them back. |
 
 ---
 
@@ -74,7 +74,7 @@ This project was built using a combination of data science and web development t
 
 ---
 
-### 🚀 Running This Project
+###  Running This Project
 
 Want to explore the project on your own machine? Follow these steps.
 
@@ -104,4 +104,5 @@ Simply open the `index.html` file in your browser to see the final result.
 
 <p align="center">
   <em>This project was created as a demonstration of a full-stack data science workflow, from data analysis to a user-facing product.</em>
+
 </p>
